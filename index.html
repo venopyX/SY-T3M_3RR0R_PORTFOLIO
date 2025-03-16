@@ -7,100 +7,102 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" />
     <style>
-      body {
-          font-family: 'JetBrains Mono', monospace;
-          background-color: #0d1117;
-          color: #c9d1d9;
-          overflow-x: hidden;
-      }
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            overflow-x: hidden;
+        }
+        
+        .glitch {
+            animation: glitch 0.5s linear infinite alternate;
+        }
+        
+        .terminal-prompt::before {
+            content: ">";
+            color: #58a6ff;
+            margin-right: 8px;
+        }
+        
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.03) 50%, transparent 50%);
+            background-size: 100% 4px;
+            z-index: 100;
+            pointer-events: none;
+            opacity: 0.2;
+        }
+        
+        .cursor {
+            animation: blink 1s infinite;
+        }
 
-      .glitch {
-          animation: glitch 0.5s linear infinite alternate;
-      }
+        .code-line {
+            position: relative;
+            padding-left: 3rem;
+            line-height: 2;
+        }
 
-      .terminal-prompt::before {
-          content: ">";
-          color: #58a6ff;
-          margin-right: 8px;
-      }
+        .code-line::before {
+            content: attr(data-line);
+            position: absolute;
+            left: 0;
+            color: #484f58;
+            width: 2.5rem;
+            text-align: right;
+        }
 
-      .scanlines {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(to bottom, rgba(255,255,255,0.03) 50%, transparent 50%);
-          background-size: 100% 4px;
-          z-index: 100;
-          pointer-events: none;
-          opacity: 0.2;
-      }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            25% { transform: translate(-2px, 2px); }
+            50% { transform: translate(-2px, -2px); }
+            75% { transform: translate(2px, 2px); }
+            100% { transform: translate(2px, -2px); }
+        }
 
-      .cursor {
-          animation: blink 1s infinite;
-      }
+        .project-card {
+            height: 0;
+            overflow: hidden;
+            transition: height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            opacity: 0;
+        }
 
-      .code-line {
-          position: relative;
-          padding-left: 3rem;
-      }
+        .project-card.active {
+            height: auto;
+            opacity: 1;
+        }
 
-      .code-line::before {
-          content: attr(data-line);
-          position: absolute;
-          left: 0;
-          color: #484f58;
-          width: 2.5rem;
-          text-align: right;
-      }
-
-      @keyframes blink {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0; }
-      }
-
-      @keyframes glitch {
-          0% { transform: translate(0); }
-          25% { transform: translate(-2px, 2px); }
-          50% { transform: translate(-2px, -2px); }
-          75% { transform: translate(2px, 2px); }
-          100% { transform: translate(2px, -2px); }
-      }
-
-      .project-card {
-          height: 0;
-          overflow: hidden;
-          transition: height 0.5s ease-in-out, opacity 0.5s ease-in-out;
-          opacity: 0;
-      }
-
-      .project-card.active {
-          height: auto;
-          opacity: 1;
-      }
-
-      .error-trigger {
-          position: relative;
-      }
-
-      .error-trigger::after {
-          content: "";
-          position: absoluteSY$T3M_3RR0R;
-          bottom: -2px;
-          left: 0;
-          width: 100%;
-          height: 2px;
-          background: currentColor;
-          transform: scaleX(0);
-          transform-origin: right;
-          transition: transform 0.3s ease;
-      }
-
-      .error-trigger:hover::after {
-          transform: scaleX(1);
-          transform-origin: left;
-      }
+        .error-trigger {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .error-trigger::after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: currentColor;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+        
+        .error-trigger:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
     </style>
   </head>
   <body class="flex min-h-screen flex-col">
